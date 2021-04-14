@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +22,27 @@ import java.util.logging.Logger;
 public class HangHoaConnection {
         static JDBCConnection con= new JDBCConnection();
 
+    public List<HangHoa> getAllHangHoa(){
+        List<HangHoa> hhs = new ArrayList<>();//tao list moi
+        Connection cn =  con.getJDBCConnection();
+        String sql ="select * from tblSanPham";
+        try {
+            PreparedStatement pstm = cn.prepareStatement(sql);
+            ResultSet rs = pstm.executeQuery();
+            while(rs.next()){
+                HangHoa hh = new HangHoa();//tao doi tuong moi cua class user
+                hh.setMaHang(rs.getString("idSP"));
+                hh.setTenMatHang(rs.getString("tenSP"));
+                hh.setNamSanXuat(rs.getString("namSX"));
+                hh.setDonGian(rs.getString("donGia"));
+                hh.setSoLuong(rs.getString("soLuong"));
+                hhs.add(hh);//thêm us vào list users
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(HangHoaConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return hhs;//tra ve list
+    }
     public static void delete(String idSP){
         Connection cn = con.getJDBCConnection();
         String sql = "delete from tblSanPham where idSP = ?";

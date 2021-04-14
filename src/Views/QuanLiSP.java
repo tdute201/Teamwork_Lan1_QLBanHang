@@ -5,17 +5,44 @@
  */
 package Views;
 
+import Model.HangHoa;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import service.HangHoaService;
+
 /**
  *
  * @author thien
  */
 public class QuanLiSP extends javax.swing.JFrame {
+    HangHoaService hangHoaService;
+    DefaultTableModel defaulttableModel;
 
     /**
      * Creates new form QuanLiSP
      */
+    public void setTable(List<HangHoa> hhs){
+        for(HangHoa hh : hhs){
+            defaulttableModel.addRow(new Object[]{hh.getMaHang(),hh.getTenMatHang(),hh.getNamSanXuat(),hh.getDonGian(),hh.getSoLuong()});
+        }
+    }
     public QuanLiSP() {
         initComponents();
+        hangHoaService = new HangHoaService();
+        hangHoaService = new HangHoaService();
+        defaulttableModel = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        TableSP.setModel(defaulttableModel);
+        defaulttableModel.addColumn("Mã Hàng");
+        defaulttableModel.addColumn("Tên Mặt Hàng");
+        defaulttableModel.addColumn("Năm sản xuất");
+        defaulttableModel.addColumn("Đơn giá");
+        defaulttableModel.addColumn("Số Lượng");
+        setTable(hangHoaService.getALLHangHoa());
     }
 
     /**
@@ -28,7 +55,7 @@ public class QuanLiSP extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TableSP = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jTextFieldMH = new javax.swing.JTextField();
@@ -39,10 +66,11 @@ public class QuanLiSP extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        ButtonSua = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TableSP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -53,7 +81,7 @@ public class QuanLiSP extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TableSP);
 
         jLabel4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel4.setText("Don_Gia");
@@ -80,6 +108,8 @@ public class QuanLiSP extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jLabel3.setText("Nam_SX");
 
+        ButtonSua.setText("Sửa");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -100,7 +130,9 @@ public class QuanLiSP extends javax.swing.JFrame {
                     .addComponent(jTextFieldTen, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextFieldMH, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextFieldSL))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ButtonSua)
+                .addGap(119, 119, 119))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
@@ -109,14 +141,15 @@ public class QuanLiSP extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(58, Short.MAX_VALUE)
+                .addContainerGap(57, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextFieldMH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextFieldTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ButtonSua))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -173,13 +206,14 @@ public class QuanLiSP extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ButtonSua;
+    private javax.swing.JTable TableSP;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextFieldDG;
     private javax.swing.JTextField jTextFieldMH;
     private javax.swing.JTextField jTextFieldNam;
